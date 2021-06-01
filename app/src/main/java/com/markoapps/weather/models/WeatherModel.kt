@@ -2,6 +2,11 @@ package com.markoapps.weather.models
 
 import com.google.gson.annotations.SerializedName
 
+data class WeatherResponse(
+        @SerializedName("coord") val coord: Coord,
+        @SerializedName("weather") val weather: WeatherModel
+)
+
 data class WeatherModel (
     @SerializedName("id")   val id: Int,
     @SerializedName("name") val name: String,
