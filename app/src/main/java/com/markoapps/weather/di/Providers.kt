@@ -4,9 +4,10 @@ import android.content.Context
 import com.markoapps.weather.networks.WeatherApi
 import com.markoapps.weather.utils.Constans
 import com.markoapps.weather.utils.LocationUtil
+import com.markoapps.weather.utils.TimeUtil
+import com.markoapps.weather.viewmodels.WeatherViewModelFactory
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
-import okhttp3.Request
 import okhttp3.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -15,13 +16,13 @@ import java.io.IOException
 
 object Providers {
 
-    fun initilized(applicationContext: Context) {
+    fun initialized(applicationContext: Context) {
         appContext = applicationContext
     }
 
     lateinit var appContext: Context
 
-    val retrofit: WeatherApi by lazy {
+    val weatherApi: WeatherApi by lazy {
 
         val apiKey = Constans.APIKey
 
@@ -49,8 +50,16 @@ object Providers {
         retrofit.create(WeatherApi::class.java)
     }
 
+    val timeUtil: TimeUtil by lazy {
+        TimeUtil()
+    }
+
     val locationUtil: LocationUtil by lazy {
         LocationUtil(appContext)
+    }
+
+    val weatherViewModelFactory: WeatherViewModelFactory by lazy {
+        WeatherViewModelFactory()
     }
 
 

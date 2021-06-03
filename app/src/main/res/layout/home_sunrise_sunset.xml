@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".FirstFragment">
+    tools:context=".views.HomeFragment">
 
 
     <TextView
@@ -64,17 +64,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/sunset_title"
         tools:text="17:22" />
-
-    <TextView
-        android:id="@+id/day_length"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="3 hours forcast data"
-        android:layout_marginStart="16dp"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:text="Lenght of day: 10h 56m"
-        android:layout_marginLeft="16dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

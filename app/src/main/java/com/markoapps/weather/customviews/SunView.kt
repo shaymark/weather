@@ -16,14 +16,14 @@ class SunView(context: Context?) : View(context) {
     fun StrokeFill(context: Context?) {
 //        shapePath = Path()
 //        shapePath = path
-        fillPaint = Paint()
-        fillPaint.setColor(Color.WHITE)
-        fillPaint.setStyle(Paint.Style.FILL)
-        fillPaint.setStrokeWidth(0)
-        strokePaint = Paint()
-        strokePaint.setColor(Color.RED)
-        strokePaint.setStyle(Paint.Style.STROKE)
-        strokePaint.setStrokeWidth(3)
+//        fillPaint = Paint()
+//        fillPaint.setColor(Color.WHITE)
+//        fillPaint.setStyle(Paint.Style.FILL)
+//        fillPaint.setStrokeWidth(0)
+//        strokePaint = Paint()
+//        strokePaint.setColor(Color.RED)
+//        strokePaint.setStyle(Paint.Style.STROKE)
+//        strokePaint.setStrokeWidth(3)
         // TODO Auto-generated constructor stub
     }
 

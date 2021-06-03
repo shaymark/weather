@@ -2,19 +2,16 @@ package com.markoapps.weather.models
 
 import com.google.gson.annotations.SerializedName
 
-data class WeatherResponse(
-        @SerializedName("coord") val coord: Coord,
-        @SerializedName("weather") val weather: WeatherModel
-)
 
 data class WeatherModel (
-    @SerializedName("id")   val id: Int,
+    @SerializedName("id")   val id: Long,
     @SerializedName("name") val name: String,
     @SerializedName("coord")val coord: Coord,
     @SerializedName("main") val main: Main,
     @SerializedName("wind") val wind: Wind,
     @SerializedName("sys") val sys: Sys,
-
+    @SerializedName("weather") val weather: List<Weather>,
+    @SerializedName("visibility") val visibility: Double
     )
 
 data class Coord (

@@ -7,6 +7,6 @@ class WeatherApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        Providers.initilized(this)
+        Providers.initialized(this)
     }
 }

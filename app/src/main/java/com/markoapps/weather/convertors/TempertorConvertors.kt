@@ -1,12 +1,20 @@
 package com.markoapps.weather.convertors
 
 enum class TempetureType {
-    Celsuis,
+    Celsius,
     Ferenite
 }
 
-fun Float.convertTo(type: TempetureType): Float =
+fun Float.toTemprature(type: TempetureType): Float =
     when (type) {
-        TempetureType.Celsuis -> this - 273.15
+        TempetureType.Celsius -> this - 273.15
         TempetureType.Ferenite -> (this - 273.15) * 9 / 5 + 32
     }.toFloat()
+
+fun Float.toTempratureText(type: TempetureType): String =
+    "%.0f".format(toTemprature(type)) +
+            when(type)
+            {
+                TempetureType.Celsius ->  "C"
+                TempetureType.Ferenite -> "F"
+            }
