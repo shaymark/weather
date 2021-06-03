@@ -1,11 +1,6 @@
-package com.markoapps.weather.di
+package com.markoapps.weather.networks
 
-import android.content.Context
-import com.markoapps.weather.networks.WeatherApi
 import com.markoapps.weather.utils.Constans
-import com.markoapps.weather.utils.LocationUtil
-import com.markoapps.weather.utils.TimeUtil
-import com.markoapps.weather.viewmodels.WeatherViewModelFactory
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Response
@@ -13,24 +8,14 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.IOException
 
-
-object Providers {
-
-    fun initialized(applicationContext: Context) {
-        appContext = applicationContext
-    }
-
-    lateinit var appContext: Context
-
-    val weatherApi: WeatherApi by lazy {
-
+class WeatherApiBuilder {
+    fun getWeatherApi(): WeatherApi {
         val apiKey = Constans.APIKey
 
         val httpClient = OkHttpClient.Builder()
             .addInterceptor(object : Interceptor {
                 @Throws(IOException::class)
                 override fun intercept(chain: Interceptor.Chain): Response? {
-                    // Request customization: add request headers
                     val request = chain.request().newBuilder()
                         .url(chain.request().url().newBuilder()
                             .addQueryParameter("appid", apiKey)
@@ -47,20 +32,6 @@ object Providers {
             .client(httpClient)
             .build()
 
-        retrofit.create(WeatherApi::class.java)
+        return retrofit.create(WeatherApi::class.java)
     }
-
-    val timeUtil: TimeUtil by lazy {
-        TimeUtil()
-    }
-
-    val locationUtil: LocationUtil by lazy {
-        LocationUtil(appContext)
-    }
-
-    val weatherViewModelFactory: WeatherViewModelFactory by lazy {
-        WeatherViewModelFactory()
-    }
-
-
 }

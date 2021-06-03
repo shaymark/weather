@@ -1,5 +1,6 @@
 package com.markoapps.weather.views
 
+import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.view.LayoutInflater
@@ -15,12 +16,14 @@ import com.afollestad.materialdialogs.MaterialDialog
 import com.markoapps.weather.CityAdapter
 import com.markoapps.weather.CityItemModel
 import com.markoapps.weather.R
-import com.markoapps.weather.convertors.TempetureType
+import com.markoapps.weather.WeatherApplication
+import com.markoapps.weather.convertors.TemperatureType
 import com.markoapps.weather.databinding.FragmentCitiesBinding
-import com.markoapps.weather.di.Providers
 import com.markoapps.weather.utils.TextChangedListener
 import com.markoapps.weather.viewmodels.CitiesViewModel
 import com.markoapps.weather.viewmodels.SharedViewModel
+import com.markoapps.weather.viewmodels.MyViewModelFactory
+import javax.inject.Inject
 
 
 /**
@@ -28,9 +31,17 @@ import com.markoapps.weather.viewmodels.SharedViewModel
  */
 class CitiesFragment : Fragment() {
 
+    @Inject lateinit var myViewModelFactory: MyViewModelFactory
+
     val sharedViewModel: SharedViewModel by activityViewModels()
 
-    val citiesViewModel: CitiesViewModel by navGraphViewModels(R.id.nav_graph) {Providers.weatherViewModelFactory}
+    val citiesViewModel: CitiesViewModel by navGraphViewModels(R.id.nav_graph) {myViewModelFactory}
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        (context.applicationContext as WeatherApplication).appComponent.inject(this)
+    }
+
 
     private lateinit var binding: FragmentCitiesBinding
     lateinit var listAdapter: CityAdapter
@@ -48,7 +59,7 @@ class CitiesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        citiesViewModel._mode.value = TempetureType.Celsius
+        citiesViewModel._mode.value = TemperatureType.Celsius
 
         citiesViewModel.refreshCities()
 

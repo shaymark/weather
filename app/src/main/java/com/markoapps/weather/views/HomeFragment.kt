@@ -1,5 +1,6 @@
 package com.markoapps.weather.views
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -11,30 +12,39 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.markoapps.weather.Forecast
+import com.markoapps.weather.ForecastItemModel
 import com.markoapps.weather.ForecastAdapter
 import com.markoapps.weather.R
-import com.markoapps.weather.convertors.TempetureType
-import com.markoapps.weather.convertors.toTempratureText
+import com.markoapps.weather.WeatherApplication
+import com.markoapps.weather.convertors.TemperatureType
+import com.markoapps.weather.convertors.toTemperatureText
 import com.markoapps.weather.databinding.FragmentHomeBinding
-import com.markoapps.weather.di.Providers
-import com.markoapps.weather.utils.Formaters
+import com.markoapps.weather.utils.DateFormatter
 import com.markoapps.weather.viewmodels.CurrentWeatherViewModel
 import com.markoapps.weather.viewmodels.SharedViewModel
+import com.markoapps.weather.viewmodels.MyViewModelFactory
 import com.markoapps.weather.viewmodels.getIconUrl
 import java.util.*
+import javax.inject.Inject
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
 class HomeFragment : Fragment() {
 
+    @Inject
+    lateinit var myViewModelFactory: MyViewModelFactory
     private lateinit var binding: FragmentHomeBinding
-    private val viewModel: CurrentWeatherViewModel by viewModels { Providers.weatherViewModelFactory }
+    private val viewModel: CurrentWeatherViewModel by viewModels { myViewModelFactory }
     private val sharedViewModel: SharedViewModel by activityViewModels()
-    private val formaters: Formaters = Formaters()
+    private val dateFormatter: DateFormatter = DateFormatter()
 
     private lateinit var hourlyForecastAdapter: ForecastAdapter
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        (context.applicationContext as WeatherApplication).appComponent.inject(this)
+    }
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
@@ -50,7 +60,7 @@ class HomeFragment : Fragment() {
         viewModel.currentWeather.observe(viewLifecycleOwner) {
             binding.main.apply {
                 viewModel.currentTime.value?.let {
-                    date.text = formaters.getTimeFromDate(it)
+                    date.text = dateFormatter.getTimeFromDate(it)
                 }
                 location.text = it.name
                 minMax.text = "Min ${tempText(it.main.TempMin)} - Max ${tempText(it.main.TempMax)}"
@@ -65,8 +75,8 @@ class HomeFragment : Fragment() {
             }
 
             binding.sunriseSunset.apply {
-                sunrise.text = formaters.getTimeFromDateHourly(Date(it.sys.sunrise.toLong() * 1000))
-                sunset.text = formaters.getTimeFromDateHourly(Date(it.sys.sunset.toLong() * 1000))
+                sunrise.text = dateFormatter.getTimeFromDateHourly(Date(it.sys.sunrise.toLong() * 1000))
+                sunset.text = dateFormatter.getTimeFromDateHourly(Date(it.sys.sunset.toLong() * 1000))
             }
 
             binding.details.apply {
@@ -87,7 +97,7 @@ class HomeFragment : Fragment() {
         viewModel.forecast.observe(viewLifecycleOwner) {
             binding.main.apply {
                 hourlyForecastAdapter.submitList(it.map {
-                    Forecast(
+                    ForecastItemModel(
                             Date(it.dateTime * 1000),
                             it.weather.first().icon,
                             it.main.humidity,
@@ -117,8 +127,8 @@ class HomeFragment : Fragment() {
         viewModel.mode.observe(viewLifecycleOwner) {
 
             val title = when(it) {
-                TempetureType.Celsius -> "Celsius"
-                TempetureType.Ferenite -> "Ferenite"
+                TemperatureType.Celsius -> "Celsius"
+                TemperatureType.Fahrenheit -> "fahrenheit"
             }
 
             sharedViewModel.setTitle(title)
@@ -126,6 +136,6 @@ class HomeFragment : Fragment() {
         }
     }
 
-    fun tempText(temp: Float) = temp.toTempratureText(viewModel.mode.value!!)
+    fun tempText(temp: Float) = temp.toTemperatureText(viewModel.mode.value!!)
 
 }

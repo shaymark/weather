@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.markoapps.weather.convertors.TempetureType
+import com.markoapps.weather.convertors.TemperatureType
 import com.markoapps.weather.models.ForecastModel
 import com.markoapps.weather.models.WeatherModel
 import com.markoapps.weather.networks.WeatherApi
@@ -35,8 +35,8 @@ class CurrentWeatherViewModel(val weatherApi: WeatherApi, val locationUtil: Loca
         val TAG: String = CurrentWeatherViewModel::class.java.simpleName
     }
 
-    private val _mode: MutableLiveData<TempetureType> = MutableLiveData()
-    val mode: LiveData<TempetureType> = _mode
+    private val _mode: MutableLiveData<TemperatureType> = MutableLiveData()
+    val mode: LiveData<TemperatureType> = _mode
 
     private val _currentTime: MutableLiveData<Date> = MutableLiveData()
     val currentTime: LiveData<Date> = _currentTime
@@ -48,7 +48,7 @@ class CurrentWeatherViewModel(val weatherApi: WeatherApi, val locationUtil: Loca
     val forecast: LiveData<List<ForecastModel>> = _forecast
 
     init {
-        _mode.value = TempetureType.Celsius
+        _mode.value = TemperatureType.Celsius
     }
 
     fun refreshCurrentWeather(){
@@ -92,11 +92,11 @@ class CurrentWeatherViewModel(val weatherApi: WeatherApi, val locationUtil: Loca
 
     fun toggleMode() {
         when(_mode.value) {
-            TempetureType.Celsius -> {
-                _mode.value = TempetureType.Ferenite
+            TemperatureType.Celsius -> {
+                _mode.value = TemperatureType.Fahrenheit
             }
-            TempetureType.Ferenite -> {
-                _mode.value = TempetureType.Celsius
+            TemperatureType.Fahrenheit -> {
+                _mode.value = TemperatureType.Celsius
             }
         }
 

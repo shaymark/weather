@@ -1,21 +1,15 @@
 package com.markoapps.weather
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.markoapps.weather.convertors.TempetureType
-import com.markoapps.weather.convertors.toTemprature
-import com.markoapps.weather.convertors.toTempratureText
+import com.markoapps.weather.convertors.TemperatureType
+import com.markoapps.weather.convertors.toTemperatureText
 import com.markoapps.weather.databinding.CitiesItemBinding
-import com.markoapps.weather.databinding.HomeHourlyItemBinding
-import com.markoapps.weather.models.ForecastModel
-import com.markoapps.weather.utils.Formaters
 import com.markoapps.weather.viewmodels.getIconUrl
-import java.util.*
 
 data class CityItemModel(
         val id: Long,
@@ -24,7 +18,7 @@ data class CityItemModel(
         val icon: String,
         val tempMin: Float,
         val tempMax: Float,
-        val mode: TempetureType
+        val mode: TemperatureType
 )
 
 
@@ -51,8 +45,8 @@ class CityAdapter(val onClick: (itemId: Long) -> Unit, val onLongClick: (itemId:
                     .load(getIconUrl(cityItemModel.icon))
                     .centerCrop()
                     .into(icon);
-                tempMinMax.text = "min ${cityItemModel.tempMin.toTempratureText(cityItemModel.mode)}" +
-                                " max ${cityItemModel.tempMax.toTempratureText(cityItemModel.mode)}"
+                tempMinMax.text = "min ${cityItemModel.tempMin.toTemperatureText(cityItemModel.mode)}" +
+                                " max ${cityItemModel.tempMax.toTemperatureText(cityItemModel.mode)}"
 
                 root.setOnClickListener { onClick(cityItemModel.id) }
                 root.setOnLongClickListener {

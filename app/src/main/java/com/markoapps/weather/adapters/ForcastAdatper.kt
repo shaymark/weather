@@ -1,32 +1,29 @@
 package com.markoapps.weather
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.markoapps.weather.convertors.TempetureType
-import com.markoapps.weather.convertors.toTemprature
-import com.markoapps.weather.convertors.toTempratureText
+import com.markoapps.weather.convertors.TemperatureType
+import com.markoapps.weather.convertors.toTemperatureText
 import com.markoapps.weather.databinding.HomeHourlyItemBinding
-import com.markoapps.weather.models.ForecastModel
-import com.markoapps.weather.utils.Formaters
+import com.markoapps.weather.utils.DateFormatter
 import com.markoapps.weather.viewmodels.getIconUrl
 import java.util.*
 
-data class Forecast(
+data class ForecastItemModel(
         val dateTime: Date,
         val icon: String,
         val humidity: Float,
         val temp: Float,
-        val mode: TempetureType
+        val mode: TemperatureType
 )
 
-class ForecastAdapter: ListAdapter<Forecast, ForecastAdapter.ViewHolder>(ForecastDiffUtil()) {
+class ForecastAdapter: ListAdapter<ForecastItemModel, ForecastAdapter.ViewHolder>(ForecastDiffUtil()) {
 
-    private val formaters: Formaters = Formaters()
+    private val dateFormatter: DateFormatter = DateFormatter()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -39,27 +36,27 @@ class ForecastAdapter: ListAdapter<Forecast, ForecastAdapter.ViewHolder>(Forecas
 
     inner class ViewHolder(private val itemBinding: HomeHourlyItemBinding): RecyclerView.ViewHolder(itemBinding.root) {
 
-        fun bind(forecast: Forecast) {
+        fun bind(forecastItemModel: ForecastItemModel) {
 
             itemBinding.apply {
-                time.text = formaters.getTimeFromDateHourly(forecast.dateTime)
-                humidity.text = forecast.humidity.toString()
+                time.text = dateFormatter.getTimeFromDateHourly(forecastItemModel.dateTime)
+                humidity.text = forecastItemModel.humidity.toString()
                 Glide
                     .with(itemView)
-                    .load(getIconUrl(forecast.icon))
+                    .load(getIconUrl(forecastItemModel.icon))
                     .centerCrop()
                     .into(icon);
-                temp.text = forecast.temp.toTempratureText(forecast.mode)
+                temp.text = forecastItemModel.temp.toTemperatureText(forecastItemModel.mode)
             }
         }
     }
 
-    class ForecastDiffUtil: DiffUtil.ItemCallback<Forecast>() {
-        override fun areItemsTheSame(oldItem: Forecast, newItem: Forecast): Boolean {
+    class ForecastDiffUtil: DiffUtil.ItemCallback<ForecastItemModel>() {
+        override fun areItemsTheSame(oldItem: ForecastItemModel, newItem: ForecastItemModel): Boolean {
             return oldItem.dateTime == newItem.dateTime
         }
 
-        override fun areContentsTheSame(oldItem: Forecast, newItem: Forecast): Boolean {
+        override fun areContentsTheSame(oldItem: ForecastItemModel, newItem: ForecastItemModel): Boolean {
             return oldItem == newItem
         }
     }

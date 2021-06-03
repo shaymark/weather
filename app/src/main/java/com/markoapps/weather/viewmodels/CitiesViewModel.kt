@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.markoapps.weather.convertors.TempetureType
+import com.markoapps.weather.convertors.TemperatureType
 
 import com.markoapps.weather.models.WeatherModel
 import com.markoapps.weather.networks.WeatherApi
@@ -22,8 +22,8 @@ class CitiesViewModel(val weaterApi: WeatherApi, val locationUtil: LocationUtil)
     val _filterString: MutableLiveData<String> = MutableLiveData()
     val filterString: LiveData<String> = _filterString
 
-    val _mode:MutableLiveData<TempetureType> = MutableLiveData()
-    val mode:LiveData<TempetureType> = _mode
+    val _mode:MutableLiveData<TemperatureType> = MutableLiveData()
+    val mode:LiveData<TemperatureType> = _mode
 
     val _citiesList:MutableLiveData<List<WeatherModel>> = MutableLiveData()
     val citiesList:LiveData<List<WeatherModel>> = _citiesList
@@ -66,11 +66,11 @@ class CitiesViewModel(val weaterApi: WeatherApi, val locationUtil: LocationUtil)
 
     fun toggleMode() {
         when(_mode.value) {
-            TempetureType.Celsius -> {
-                _mode.value = TempetureType.Ferenite
+            TemperatureType.Celsius -> {
+                _mode.value = TemperatureType.Fahrenheit
             }
-            TempetureType.Ferenite -> {
-                _mode.value = TempetureType.Celsius
+            TemperatureType.Fahrenheit -> {
+                _mode.value = TemperatureType.Celsius
             }
         }
 
