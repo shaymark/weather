@@ -6,19 +6,27 @@
     android:layout_height="match_parent"
     tools:context=".views.HomeFragment">
 
-
     <TextView
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Sunrise and sunset"
         android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
         android:layout_marginTop="16dp"
+        android:text="Sunrise and sunset"
+        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text = "Sunrise and sunset"
-        android:textSize="20sp"
-        android:layout_marginLeft="16dp" />
+        tools:text="Sunrise and sunset" />
+
+    <com.markoapps.weather.customViews.SunsetSunriseView
+        android:id="@+id/cust_view"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title" />
 
 
     <TextView
@@ -64,5 +72,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/sunset_title"
         tools:text="17:22" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

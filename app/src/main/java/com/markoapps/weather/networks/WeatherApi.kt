@@ -4,6 +4,7 @@ import com.markoapps.weather.models.FindResponse
 import com.markoapps.weather.models.ForecastResponse
 import com.markoapps.weather.models.WeatherModel
 import com.markoapps.weather.viewmodels.CitiesViewModel
+import kotlinx.coroutines.flow.Flow
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -15,6 +16,11 @@ interface WeatherApi {
     ): WeatherModel
 
     @GET("weather")
+    fun getCurrentWeatherByCityFlow(
+        @Query("q") query: String
+    ): Flow<WeatherModel>
+
+    @GET("weather")
     suspend fun getCurrentWeatherByCityId(
         @Query("id") id: String
     ): WeatherModel
@@ -24,6 +30,12 @@ interface WeatherApi {
         @Query("lat") lat: String,
         @Query("lon") lon: String
     ): WeatherModel
+
+    @GET("weather")
+    fun getCurrentWeatherByLocationFlow(
+            @Query("lat") lat: String,
+            @Query("lon") lon: String
+    ): Flow<WeatherModel>
 
     @GET("forecast")
     suspend fun getForecastByCity(

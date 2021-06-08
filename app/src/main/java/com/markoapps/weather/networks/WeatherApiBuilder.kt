@@ -1,6 +1,7 @@
 package com.markoapps.weather.networks
 
 import com.markoapps.weather.utils.Constans
+import me.sianaki.flowretrofitadapter.FlowCallAdapterFactory
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Response
@@ -29,6 +30,7 @@ class WeatherApiBuilder {
         val retrofit: Retrofit = Retrofit.Builder()
             .baseUrl("https://api.openweathermap.org/data/2.5/")
             .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(FlowCallAdapterFactory.create())
             .client(httpClient)
             .build()
 

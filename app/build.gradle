@@ -75,4 +75,8 @@ dependencies {
 
     implementation 'com.google.dagger:dagger:2.35'
     kapt 'com.google.dagger:dagger-compiler:2.35'
+
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.3.1")
+
+    implementation 'com.github.MohammadSianaki:Retrofit2-Flow-Call-Adapter:0.2.0'
 }

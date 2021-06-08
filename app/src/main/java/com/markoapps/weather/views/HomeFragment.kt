@@ -2,28 +2,33 @@ package com.markoapps.weather.views
 
 import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.markoapps.weather.ForecastItemModel
 import com.markoapps.weather.ForecastAdapter
+import com.markoapps.weather.ForecastItemModel
 import com.markoapps.weather.R
 import com.markoapps.weather.WeatherApplication
 import com.markoapps.weather.convertors.TemperatureType
 import com.markoapps.weather.convertors.toTemperatureText
 import com.markoapps.weather.databinding.FragmentHomeBinding
 import com.markoapps.weather.utils.DateFormatter
+import com.markoapps.weather.utils.TimeUtil
 import com.markoapps.weather.viewmodels.CurrentWeatherViewModel
-import com.markoapps.weather.viewmodels.SharedViewModel
 import com.markoapps.weather.viewmodels.MyViewModelFactory
+import com.markoapps.weather.viewmodels.SharedViewModel
 import com.markoapps.weather.viewmodels.getIconUrl
+import java.time.Duration
+import java.time.ZoneId
+import java.time.ZonedDateTime
+import java.time.temporal.Temporal
 import java.util.*
 import javax.inject.Inject
 
@@ -34,6 +39,10 @@ class HomeFragment : Fragment() {
 
     @Inject
     lateinit var myViewModelFactory: MyViewModelFactory
+
+    @Inject
+    lateinit var timeUtil: TimeUtil
+
     private lateinit var binding: FragmentHomeBinding
     private val viewModel: CurrentWeatherViewModel by viewModels { myViewModelFactory }
     private val sharedViewModel: SharedViewModel by activityViewModels()
@@ -57,7 +66,7 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.currentWeather.observe(viewLifecycleOwner) {
+        viewModel.currentWeatherLiveData.observe(viewLifecycleOwner) {
             binding.main.apply {
                 viewModel.currentTime.value?.let {
                     date.text = dateFormatter.getTimeFromDate(it)
@@ -77,6 +86,13 @@ class HomeFragment : Fragment() {
             binding.sunriseSunset.apply {
                 sunrise.text = dateFormatter.getTimeFromDateHourly(Date(it.sys.sunrise.toLong() * 1000))
                 sunset.text = dateFormatter.getTimeFromDateHourly(Date(it.sys.sunset.toLong() * 1000))
+                if(timeUtil.getCurrentTime().time > it.sys.sunrise && timeUtil.getCurrentTime().time < it.sys.sunset) {
+                    custView.setSunBitmap(R.drawable.ic_more)
+                } else {
+                    custView.setSunBitmap(R.drawable.ic_sun)
+                }
+                var progress = (1  - timeUtil.getTimeUntilMidnite().toFloat() / 86400000) * 0.75f + 0.125f
+                custView.setProgress(progress)
             }
 
             binding.details.apply {
