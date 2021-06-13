@@ -1,10 +1,12 @@
 package com.markoapps.weather.views
 
 import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -63,6 +65,7 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -87,7 +90,7 @@ class HomeFragment : Fragment() {
                 sunrise.text = dateFormatter.getTimeFromDateHourly(Date(it.sys.sunrise.toLong() * 1000))
                 sunset.text = dateFormatter.getTimeFromDateHourly(Date(it.sys.sunset.toLong() * 1000))
                 if(timeUtil.getCurrentTime().time > it.sys.sunrise && timeUtil.getCurrentTime().time < it.sys.sunset) {
-                    custView.setSunBitmap(R.drawable.ic_more)
+                    custView.setSunBitmap(R.drawable.ic_sun_day)
                 } else {
                     custView.setSunBitmap(R.drawable.ic_sun)
                 }
